@@ -52,7 +52,8 @@ function [Nodes,Elements] = WN_GenerateGrid(width)
             p2_index=0;
             p3_index=0;
             p4_index=0;
-            for k=1:size(Nodes)(2)
+            
+            for k=1:size(Nodes,2)
                 if(Nodes(:,k) == p1)
                     p1_index=k;
                 end
@@ -65,7 +66,7 @@ function [Nodes,Elements] = WN_GenerateGrid(width)
                 if(Nodes(:,k) == p4)
                     p4_index=k;
                 end
-                if(p1_index!=0 && p2_index!=0 && p3_index!=0 && p4_index!=0)
+                if(p1_index~=0 && p2_index~=0 && p3_index~=0 && p4_index~=0)
                     break
                 end
             end

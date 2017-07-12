@@ -14,7 +14,7 @@ function A=WN_OperatorAssembler(Grid, GridNodes)
         LocalTransformJacobian = [GridNodes(:,Element(2))-GridNodes(:,Element(1)) GridNodes(:,Element(3))-GridNodes(:,Element(1))];
         % and it's inverse
         LocalTransformJacobianInv = inv(LocalTransformJacobian);
-        
+
         % Dimension of local basis (1 for each node)
         LocalSize=size(Element)(1);
         for j=1:LocalSize
@@ -24,7 +24,7 @@ function A=WN_OperatorAssembler(Grid, GridNodes)
                 %compute the gradient of phi_i
                 GradPhiI=LocalBasisGradients(i,:)*LocalTransformJacobianInv;
                 %integrate their product over the triangle in question
-                local_update = WN_MidPointQuad(GridNodes(:,Element'),@(x)GradPhiI*GradPhiJ');
+                local_update = WN_MidPointQuad(GridNodes(:,Element'),@(x)dot(GradPhiI,GradPhiJ));
                 %update the matrix
                 A(Element(j),Element(i)) = A(Element(j),Element(i)) + local_update;
             end

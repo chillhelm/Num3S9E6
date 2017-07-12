@@ -10,7 +10,7 @@ function err=WN_ComputeErrors(Grid, GridNodes,uh,solution,solgrad)
         %compute transformation to current grid element from reference triangle
         LocalTransformJacobian = [GridNodes(:,Element(2))-GridNodes(:,Element(1)) GridNodes(:,Element(3))-GridNodes(:,Element(1))];
         LocalTransformJacobianInv = inv(LocalTransformJacobian);
-        
+
         % compute the gradient of Uh on this triangle
         GradUh=[uh(Element(2))-uh(Element(1)) uh(Element(3))-uh(Element(1))]*LocalTransformJacobianInv;
         % compute H1 semi-norm on this triangle

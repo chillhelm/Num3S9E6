@@ -12,7 +12,7 @@
 %   GNU Lesser Public License for more details.
 %   
 %   You should have received a copy of the GNU Lesser Public License
-%   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+%   along with Num3S9E6.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
@@ -23,30 +23,39 @@ solgrad=@(x)[4*x(1)^3*x(2)^5-17*x(2)*cos(x(1)*x(2)) 5*x(1)^4*x(2)^4-17*x(1)*cos(
 Errors=[];
 for n=2:8
     h=2^-n;
+    desc = sprintf('Grid Width: 2^-%i = %f',n,h);
+    disp(desc);
     %Generate a grid with the appropriate width
     [Nodes,Elements]=WN_GenerateGrid(h);
+    disp("Created the grid.")
     %Assemble the linear FEM operator
     A=WN_OperatorAssembler(Elements,Nodes);
+    disp("Assembled the operator.");
     %Assemble the right hand side
     b=WN_RHSAssembler(Elements,Nodes, rhs_function, boundary_terms);
+    disp("Assembled RHS");
     %Solve
     uh=A\b;
+    disp("Found uh");
     %Compute errors
     Errors = [Errors [n;h; WN_ComputeErrors(Elements,Nodes,uh,boundary_terms, solgrad)]];
+    disp("Computed Errors.");
     %Compute convergence rate
     if size(Errors,2)>1
       rate_L2 = (log(Errors(3,end))-log(Errors(3,end-1)))/(log(Errors(2,end))-log(Errors(2,end-1)));
       rate_H1 = (log(Errors(4,end))-log(Errors(4,end-1)))/(log(Errors(2,end))-log(Errors(2,end-1)));
+      s = sprintf('The order of convergence in the L2 based on finest meshes is %g',rate_L2);
+      disp(s);
+      t = sprintf('The order of convergence in the H1 semi norm based on finest meshes is %g',rate_H1);
+      disp(t);
+
     end
+
+    %Show a table with the errors
+    disp(Errors);
+    fflush(stdout);
 end
 
-%Show a table with the errors
-Errors
 
 
-
-s = sprintf('The order of convergence in the L2 based on finest meshes is %g',rate_L2);
-disp(s);
-t = sprintf('The order of convergence in the H1 semi norm based on finest meshes is %g',rate_H1);
-disp(t);
 
